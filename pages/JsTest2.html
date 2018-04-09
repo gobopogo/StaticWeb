@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Js</title>
+    <style>
+        .sjx{
+            width: 0;
+            height: 0;
+            border-top: 40px solid transparent;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 40px solid #ff0000;
+        }
+    </style>
+</head>
+<body>
+<h2>JavaScript</h2>
+<div class="sjx"></div>
+<span>三角形</span>
+<script>
+
+    var start = Date.now();
+
+    var date1 = new Date(Date.parse("May 12 2018"));
+    console.log(date1);
+
+    var stop = Date.now();
+
+    console.log(stop-start);    //毫秒数
+
+    var date2 = new Date();
+    console.log(date2.toUTCString());
+    console.log(date2);
+
+    function abd(temp, temp1) {
+        console.log("两个参数！")
+    }
+
+    function abd(temp) {
+       console.log("一个参数！")
+    }
+
+    abd(1,3);  //输出结果永远是一个后一个abd函数的出处结果
+
+    /**
+     * 函数声明提升
+     */
+    console.log(sum(10,10));    //20
+    function sum(a, b) {
+        return a + b;
+    }
+
+    //这里是会把报错的
+    //console.log(sum1(10, 20));  //sum1 is not a function，函数定义为一个变量时，不能的到提升
+    var sum1 = function (a, b) {
+        return a + b;
+    }
+
+    /**
+     * 把函数作为一个参数 传递
+     * @param name
+     * @returns {string}
+     */
+     function getGreeting(name) {
+         return "Hello " + name;
+     }
+
+     function callSomeFunction(someFunction, params) {
+        return someFunction(params);
+     }
+
+     console.log(callSomeFunction(getGreeting, "World"));   //输出Hello World
+
+    /*
+    * 函数返回函数
+    * */
+    function createComparisionFunction(propertyName) {
+        return function (object1, object2) {
+             var value1 = object1[propertyName];
+             var value2 = object2[propertyName];
+             if(value1 < value2){
+                 return -1;     //降序
+             }else if(value1 > value2){
+                 return 1;
+             }else {
+                 return 0;
+             }
+        };
+    }
+
+    var object1 = [{name:"xiaozhang",age:12},{name:"xiaohu",age:23}];
+    object1.sort(createComparisionFunction("age"));
+    console.log("年龄小的是：" + object1[0].name);
+
+    function factorial(num) {
+        if(num < 1){
+            return 1;
+        }else{
+            console.log(arguments.valueOf());
+            return num * arguments.callee(num - 1);     //arguments.callee指向的是arguments对象的函数的指针
+        }
+    }
+    console.log("10的阶乘：" +factorial(10));
+
+    function outer() {
+        inner();
+    }
+    function inner() {
+        //这里是会把报错的
+        //alert(inner().caller);  //caller属性保存着调用当前函数的函数的引用（指针），等同于arguments.callee.coller
+    }
+    outer();
+
+    /**
+     * 函数的call()方法 和 apply()方法
+     * 两者的区别在于参数列表的不同
+     * call(this, params1, params2) 参数必须全部列出
+     * apply(this, arguments)
+     * apply(this, params1, params2)
+     * apply(this, [a, b...])   apply传递的参数列表则比较灵活，有前面几种类Array的数据结构
+     */
+    function sumTest(num1, num2) {
+        return num1 + num2;
+    }
+
+    function callSumTest(num1, num2) {
+        return sumTest.apply(this, arguments);
+        //sumTest是一个函数名（指针），apply方法是非继承而来的，用于在特定的函数作用域修改函数体内this对象的值
+        //这里的this指的是window对象，arguments是callSumTest的参数对象
+    }
+
+    console.log("apply方法应用：" + callSumTest(10, 10));
+
+    window.color = "red";
+    var o = { color: "blue"};
+
+    function sayColor() {
+        console.log("sayColor函数：" + this.color);
+    }
+    sayColor(this);
+    sayColor.call(window);
+    sayColor.call(o);
+
+    console.log(typeof sayColor.bind(o));  //function,这是一个函数
+    //bind() 这个方法会创建一个函数的实例，其this值会被绑定到传给bind()函数的值
+    sayColor.bind(o)();
+
+
+</script>
+</body>
+</html>

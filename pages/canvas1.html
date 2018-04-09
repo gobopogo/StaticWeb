@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas1</title>
+</head>
+<body>
+<h2>JavaScript</h2>
+
+<!--不要用css设置canvas宽高，拉伸会-->
+<canvas id="demo" width="600"; height="600" style="border: 1px solid red"></canvas>
+<script>
+    //拿到canvas标签
+    var canvas = document.getElementById("demo");
+    //拿到canvas上下文
+    var ctx = canvas.getContext("2d");
+    //绘制
+    ctx.moveTo(100,100);  //把画笔移动到100,200点
+    ctx.lineTo(200,100);  //从画笔的位置画一条直线到200,100点
+    ctx.strokeStyle='blue';
+    ctx.stroke();
+
+    ctx.beginPath();  //之前上下文状态到此为止，下面重新开启其它样式.没有beginPath也可继承前面的状态
+    ctx.moveTo(200,100);
+    ctx.lineTo(100,200);  //从当前位置到100,200点画一条线
+    ctx.strokeStyle='red'; //颜色rgba(),rgb(),red,#000格式
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(100,200);
+    ctx.lineTo(100,100);
+    ctx.stroke(); //描边的意思
+
+    //填充
+    ctx.fillStyle = 'green';
+    ctx.fill();
+
+</script>
+</body>
+</html>

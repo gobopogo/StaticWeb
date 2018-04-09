@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Js面向对象</title>
+</head>
+<body>
+<h2>JavaScript面向对象</h2>
+<script>
+
+    /**
+     * 字面量创建一个对象
+     * @type {{name: string, age: number, job: string, sayName: parent.sayName}}
+     */
+    var parent = {
+        name:"Hello World",
+        age:12,
+        job:"Coder",
+        sayName: function () {
+            console.log("名字叫做：" + this.name);
+        }
+    };
+
+    parent.sayName();   //sayName是parent对象的一个属性，指向一个函数，带上()就是执行该函数
+
+    /**
+     * 定义数据属性
+     */
+    Object.defineProperty(parent, "job", {
+        writable:false,
+        configurable:false,
+        value:"Script"
+    });     //writable 是否可写; configurable 是否可以删除
+
+    console.log(parent.job);
+    parent.job = "Change";      //赋不了值
+    delete parent.job;          //删除不了
+    console.log(parent.job);
+
+    /**
+     * 定义访问器属性
+     * _name 只是一个普通属性
+     * name 就是一个访问器属性，下划线是一种常用的记号，用于表示只能通过对象方法访问
+        的属性
+     */
+    var book = {
+        _name : "Qiaobusi",
+        year : 2008
+    };
+    Object.defineProperty(book, "name", {
+       get: function (){
+           return this._name;
+           },
+       set: function (v) {
+           this._name = v; this.year = this.year + 1;
+       }
+    });
+
+    console.log("书名：" + book._name + " 年：" + book.year);
+    book.name = "Lubingxun";
+    console.log("书名：" + book._name + " 年：" + book.year);
+
+    var descriptor = Object.getOwnPropertyDescriptor(book, "_name")
+    console.log("访问器属性：" +  typeof descriptor.get);     //undefined
+
+    var descriptor = Object.getOwnPropertyDescriptor(book, "name")
+    console.log("访问器属性：" +  typeof descriptor.get);     //function
+
+    /**
+     * 1、工厂模式
+     * @param name
+     * @param age
+     * @param job
+     * @returns {Object}
+     */
+    function createPerson(name, age, job) {
+        var o = new Object();
+        o.name = name;
+        o.age = age;
+        o.job = job;
+        o.sayName = function () {
+            alert(this.name);
+        };
+        return o;
+    }
+
+    var person = createPerson("张三", 12, "gongwuyuan");
+
+    /**
+     * 2、构造函数模式
+     * 始终以大写字母开头
+     * @param name
+     * @param age
+     * @param job
+     * @constructor
+     */
+    function Person(name, age, job) {
+        this.name = name;
+        this.age = age;
+        this.job = job;
+        this.sayName = function () {
+            console.log("构造函数：" + this.name);
+        };
+    }
+    //将构造函数当作函数的 3 种方式，
+    // 弊处，每创建一个对象，就有一个函数sayName对象被实例化
+    // 当作构造函数使用
+    var person1 = new Person("lisi", 34, "shuishou");
+    person1.sayName();
+
+    // 作为普通函数调用
+    Person("Greg", 12, "Docter");
+    window.sayName();
+
+    // 在另外一个对象作用域中调用
+    var o = new Object();
+    Person.call(o, "Tom", 12, "Teacher");   // Person构造函数也是函数，也有call, apply方法
+    o.sayName();
+
+    //把sayName属性设置为全局的sayName属性，但是这样的引用类型就没有封装性可言了
+    function Person(name, age, job) {
+    this.name = name;
+    this.age = age;
+    this.job = job;
+    this.sayName = sayName;
+    }
+
+    function sayName() {
+        console.log("构造函数：" + this.name);
+    }
+
+
+
+
+</script>
+</body>
+</html>
