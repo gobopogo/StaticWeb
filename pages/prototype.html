@@ -1,0 +1,43 @@
+<html>
+<head>
+
+	<title>prototype原型链</title>
+	<script>
+
+		//构造函数
+		function SuperType(){
+			this.property = true;
+		}
+
+		SuperType.prototype.getSuperValue = function(){
+			return this.property;
+		};
+
+		//构造函数
+		function SubType(){
+			this.subproperty = false;
+			this.getSubValue = function () {
+                return this.subproperty;
+            }
+            this.init = function () {
+                console.log("init-methed");
+            }
+		}
+
+		//SubType继承了SuperType
+		SubType.prototype = new SuperType();
+
+		var instance = new SubType();
+		console.log(instance.getSuperValue()); //true
+		console.log(instance.getSubValue()); //false
+
+	</script>
+</head>
+
+<body>
+
+<h1>prototype</h1>
+
+</body>
+
+</html>
